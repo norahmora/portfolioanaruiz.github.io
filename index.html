@@ -3,21 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-<title>WEB-ANA - Diseño Final Tipografías</title>
+<title>WEB-ANA - Diseño Final</title>
 <link rel="stylesheet" href="estilos.css">
 <link href="css/Untitled-2.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-
-    <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-            <filter id="goo">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
-                <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
-            </filter>
-        </defs>
-    </svg>
 
     <div class="menu-trigger" id="btnAbrirMenu">
         <span></span><span></span><span></span>
@@ -50,39 +40,35 @@
         
         <div class="anillo-fino-exterior"></div>
         
-        <div class="contenedor-liquido">
-            
-            <div class="anillo-central-base"></div>
-            
-            <div class="blob-item blob-0" id="blob0"></div> <div class="blob-item blob-1" id="blob1"></div> <div class="blob-item blob-2" id="blob2"></div> <div class="blob-item blob-3" id="blob3"></div> </div>
+        <div class="anillo-grueso" id="anilloElastico"></div>
 
         <svg class="capa-iconos-svg" viewBox="0 0 650 650">
             <a href="plan-igualdad.html">
                 <g class="grupo-icono">
-                    <circle class="circulo-exterior" cx="110" cy="110" r="35" />
-                    <image href="calendar.png" x="92" y="92" width="36" height="36" />
-                    <text class="texto-hover" x="110" y="60">Planes de Igualdad</text>
+                    <circle class="circulo-exterior" cx="95" cy="95" r="35" />
+                    <image href="calendar.png" x="77" y="77" width="36" height="36" />
+                    <text class="texto-hover" x="95" y="45">Planes de Igualdad</text>
                 </g>
             </a>
             <a href="#intervencion">
                 <g class="grupo-icono">
-                    <circle class="circulo-exterior" cx="540" cy="110" r="35" />
-                    <image href="chat.png" x="522" y="92" width="36" height="36" />
-                    <text class="texto-hover" x="540" y="60">Intervención Social</text>
+                    <circle class="circulo-exterior" cx="555" cy="95" r="35" />
+                    <image href="chat.png" x="537" y="77" width="36" height="36" />
+                    <text class="texto-hover" x="555" y="45">Intervención Social</text>
                 </g>
             </a>
             <a href="#sobre-mi">
                 <g class="grupo-icono">
-                    <circle class="circulo-exterior" cx="110" cy="540" r="35" />
-                    <image href="doc.png" x="92" y="522" width="36" height="36" />
-                    <text class="texto-hover" x="110" y="600">Sobre mí</text>
+                    <circle class="circulo-exterior" cx="95" cy="555" r="35" />
+                    <image href="doc.png" x="77" y="537" width="36" height="36" />
+                    <text class="texto-hover" x="95" y="615">Sobre mí</text>
                 </g>
             </a>
             <a href="#violencia">
                 <g class="grupo-icono">
-                    <circle class="circulo-exterior" cx="540" cy="540" r="35" />
-                    <image href="seguridad.png" x="522" y="522" width="36" height="36" />
-                    <text class="texto-hover" x="540" y="600">Violencia de Género</text>
+                    <circle class="circulo-exterior" cx="555" cy="555" r="35" />
+                    <image href="seguridad.png" x="537" y="537" width="36" height="36" />
+                    <text class="texto-hover" x="555" y="615">Violencia de Género</text>
                 </g>
             </a>
         </svg>
@@ -101,6 +87,9 @@
         </div>
 
     </div>
+
+    <div class="scroll-dummy" style="height: 400vh; width: 1px; position: absolute; top: 0; left: 0; z-index: -1;"></div>
+
     <script src="js/ana.js"></script>
 </body>
 </html>
