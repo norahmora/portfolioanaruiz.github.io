@@ -22,7 +22,7 @@ h1, .menu-nombre, .menu-links-body a, .menu-claim, .titulo-alfa {
 }
 
 /* =========================================
-   2. HOMEPAGE (ESCENA Y ANILLO)
+   2. HOMEPAGE (ESCENA Y ANILLO CON MÁSCARA)
    ========================================= */
 .escena {
     position: fixed; 
@@ -39,67 +39,65 @@ h1, .menu-nombre, .menu-links-body a, .menu-claim, .titulo-alfa {
     pointer-events: none;
 }
 
-/* --- ANILLO GRUESO (CONTENEDOR DE FORMA) --- */
+/* --- ANILLO GRUESO (TÉCNICA DE MÁSCARA - SIN PARCHE NEGRO) --- */
 .anillo-grueso {
     position: absolute; width: 74%; height: 74%;
     border-radius: 50%; 
     top: 50%; left: 50%; 
     transform: translate(-50%, -50%) scale(1); 
-    overflow: hidden;
     z-index: 2;
-    /* Sombra suave */
-    box-shadow: 0 0 35px rgba(150, 185, 168, 0.3);
+    
+    /* EL SECRETO: Usamos padding para definir el grosor del anillo */
+    padding: 6px; /* Grosor del anillo en PC */
+    
+    /* MÁSCARA MÁGICA: Esto recorta el centro y deja solo el borde del padding */
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    
+    /* Sombra suave exterior */
+    box-shadow: 0 0 35px rgba(150, 185, 168, 0.4); 
+    
+    /* Transición suave de la forma */
     transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* El degradado que gira */
+/* El degradado que gira (Luz) */
 .anillo-grueso::before {
     content: '';
     position: absolute;
-    top: -50%; left: -50%; width: 200%; height: 200%;
+    /* Al usar content-box en la máscara, necesitamos que el before cubra todo */
+    inset: -50%; 
     background: conic-gradient(from 0deg, #fffec0, #96b9a8, #4a5f68, #fffec0, #96b9a8, #4a5f68, #fffec0);
     animation: rotarColores 10s linear infinite;
 }
 @keyframes rotarColores { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-/* El agujero central */
-.anillo-grueso::after {
-    content: '';
-    position: absolute;
-    inset: 15px; /* Grosor del anillo */
-    background: #000; 
-    border-radius: inherit; 
-    box-shadow: inset 0 0 20px rgba(150, 185, 168, 0.2); 
-}
+/* YA NO NECESITAMOS ::after (EL CÍRCULO NEGRO) */
 
 /* --- ESTADOS DE DISTORSIÓN (CORREGIDOS) --- */
-/* border-radius: Top-Left  Top-Right  Bottom-Right  Bottom-Left */
-
 /* 0. Arriba Izquierda */
 .anillo-grueso.distorsion-0 {
     border-radius: 25% 60% 60% 60%;
-    box-shadow: -10px -10px 40px rgba(255, 254, 192, 0.5);
+    box-shadow: -15px -15px 40px rgba(255, 254, 192, 0.6);
     transform: translate(-50%, -50%) scale(1.05);
 }
-
 /* 1. Arriba Derecha */
 .anillo-grueso.distorsion-1 {
     border-radius: 60% 25% 60% 60%;
-    box-shadow: 10px -10px 40px rgba(255, 254, 192, 0.5);
+    box-shadow: 15px -15px 40px rgba(255, 254, 192, 0.6);
     transform: translate(-50%, -50%) scale(1.05);
 }
-
-/* 2. Abajo Izquierda (CORREGIDO: Punta en 4º valor) */
+/* 2. Abajo Izquierda (Punta izquierda) */
 .anillo-grueso.distorsion-2 {
-    border-radius: 60% 60% 60% 25%; /* Punta abajo-izquierda */
-    box-shadow: -10px 10px 40px rgba(255, 254, 192, 0.5);
+    border-radius: 60% 60% 60% 25%;
+    box-shadow: -15px 15px 40px rgba(255, 254, 192, 0.6);
     transform: translate(-50%, -50%) scale(1.05);
 }
-
-/* 3. Abajo Derecha (CORREGIDO: Punta en 3er valor) */
+/* 3. Abajo Derecha (Punta derecha) */
 .anillo-grueso.distorsion-3 {
-    border-radius: 60% 60% 25% 60%; /* Punta abajo-derecha */
-    box-shadow: 10px 10px 40px rgba(255, 254, 192, 0.5);
+    border-radius: 60% 60% 25% 60%;
+    box-shadow: 15px 15px 40px rgba(255, 254, 192, 0.6);
     transform: translate(-50%, -50%) scale(1.05);
 }
 
@@ -183,44 +181,20 @@ h1, .menu-nombre, .menu-links-body a, .menu-claim, .titulo-alfa {
 .menu-redes-sociales { display: flex; gap: 20px; }
 .menu-icono-social img { width: 24px; height: 24px; filter: invert(1); }
 .menu-claim { text-transform: uppercase; letter-spacing: 1px; }
-@media (max-width: 768px) {
-    .foto-perfil { width: 130px; height: 130px; margin-bottom: 15px; }
-    .menu-links-body a { font-size: 28px; }
-    .menu-links-body li { border-bottom: 1px solid rgba(255, 254, 192, 0.3); padding-bottom: 15px; }
-    .menu-info-center { display: none; }
-    .menu-footer { flex-direction: column; align-items: center; gap: 15px; }
-    .texto-hover { font-size: 15px; font-weight: 700; text-shadow: 0px 0px 3px #000; }
-    .anillo-grueso { border: 10px solid transparent; }
-}
 
 /* =========================================
-   7. PÁGINA PLANES: LAYOUT Y CAPAS FIJAS
+   7. PÁGINA PLANES
    ========================================= */
 body.pagina-planes { height: auto; display: block; overflow-x: hidden; }
 .scroll-trigger { height: 600vh; width: 1px; position: absolute; top: 0; left: 0; z-index: -1; pointer-events: none; }
 
-.planes-hero-fixed {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: #000; 
-    display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-    padding: 20px; box-sizing: border-box; z-index: 50; will-change: opacity, transform; 
-}
+.planes-hero-fixed { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; box-sizing: border-box; z-index: 50; will-change: opacity, transform; }
 .texto-superior { color: #fffec0; font-size: clamp(14px, 3vw, 18px); font-weight: 300; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; }
-.titulo-planes {
-    font-family: "Alfa Slab One", serif; font-weight: 400; text-transform: uppercase; line-height: 1; margin: 0;
-    font-size: clamp(60px, 15vw, 180px);
-    background: conic-gradient(from 0deg, #fffec0, #96b9a8, #4a5f68, #fffec0, #96b9a8, #4a5f68, #fffec0);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    background-size: 200% 200%; animation: moverDegradadoTexto 10s linear infinite; will-change: transform;
-}
+.titulo-planes { font-family: "Alfa Slab One", serif; font-weight: 400; text-transform: uppercase; line-height: 1; margin: 0; font-size: clamp(60px, 15vw, 180px); background: conic-gradient(from 0deg, #fffec0, #96b9a8, #4a5f68, #fffec0, #96b9a8, #4a5f68, #fffec0); -webkit-background-clip: text; background-clip: text; color: transparent; background-size: 200% 200%; animation: moverDegradadoTexto 10s linear infinite; will-change: transform; }
 @keyframes moverDegradadoTexto { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 .texto-inferior { color: #fffec0; font-size: clamp(16px, 4vw, 24px); font-weight: 300; max-width: 600px; margin: 30px auto 0; line-height: 1.4; }
 
-.seccion-oferta-fixed {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-    background: linear-gradient(135deg, #000000 0%, #4a5f68 100%);
-    display: flex; flex-direction: column; justify-content: flex-end;
-    padding: 60px 60px 40px 60px; box-sizing: border-box; z-index: 40; will-change: opacity;
-}
+.seccion-oferta-fixed { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(135deg, #000000 0%, #4a5f68 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 60px 60px 40px 60px; box-sizing: border-box; z-index: 40; will-change: opacity; }
 .texto-crema { color: #fffec0; }
 .header-nombre { position: absolute; top: 40px; left: 50%; transform: translateX(-50%); font-size: 18px; letter-spacing: 1px; z-index: 10; text-decoration: none; color: #fffec0; text-align: center; width: 100%; cursor: pointer; transition: opacity 0.3s; }
 .header-nombre:hover { opacity: 0.8; }
@@ -231,12 +205,7 @@ body.pagina-planes { height: auto; display: block; overflow-x: hidden; }
 .estrella-fondo-container { position: absolute; top: 50%; right: -40%; transform: translateY(-50%); width: 120vh; height: 120vh; pointer-events: none; z-index: 1; opacity: 0.4; mix-blend-mode: overlay; }
 .estrella-svg { width: 100%; height: 100%; stroke: #fffec0; stroke-width: 1; fill: none; filter: drop-shadow(0 0 20px rgba(150, 185, 168, 0.6)); }
 
-.seccion-fases-fixed {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-    background: linear-gradient(135deg, #000000 0%, #4a5f68 100%);
-    z-index: 30; padding: 120px 60px 40px 60px;
-    box-sizing: border-box; display: flex; flex-direction: column; color: #fffec0; will-change: opacity;
-}
+.seccion-fases-fixed { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(135deg, #000000 0%, #4a5f68 100%); z-index: 30; padding: 120px 60px 40px 60px; box-sizing: border-box; display: flex; flex-direction: column; color: #fffec0; will-change: opacity; }
 .fases-header-container { width: 100%; margin-bottom: 40px; }
 .text-align-right { text-align: right; margin: 0 0 15px 0; font-size: clamp(20px, 3vw, 28px); font-weight: 400; letter-spacing: 1px; }
 .linea-fading-inversa { width: 100%; height: 1px; background: linear-gradient(to right, transparent 0%, rgba(255, 254, 192, 0.8) 100%); }
@@ -252,11 +221,7 @@ body.pagina-planes { height: auto; display: block; overflow-x: hidden; }
 .titulo-fase-small { font-family: "Chivo", sans-serif; font-weight: 700; text-transform: uppercase; font-size: 14px; margin: 0 0 10px 0; letter-spacing: 1px; color: #fffec0; }
 .info-fase-small p { font-family: "Chivo", sans-serif; font-size: 13px; color: rgba(255, 254, 192, 0.7); margin: 5px 0; line-height: 1.4; }
 
-.seccion-final-fixed {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-    background: linear-gradient(135deg, #000000 0%, #4a5f68 100%);
-    z-index: 20; display: flex; justify-content: center; align-items: center; overflow: hidden; 
-}
+.seccion-final-fixed { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(135deg, #000000 0%, #4a5f68 100%); z-index: 20; display: flex; justify-content: center; align-items: center; overflow: hidden; }
 .contenido-centro-estrella { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
 .estrella-gigante-nav { position: absolute; width: 150vmax; height: 150vmax; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.07; pointer-events: none; }
 .estrella-gigante-nav svg { width: 100%; height: 100%; stroke: #fffec0; fill: none; stroke-width: 0.8px; }
@@ -295,15 +260,19 @@ body.pagina-planes { height: auto; display: block; overflow-x: hidden; }
    AJUSTES RESPONSIVE (MÓVIL)
    ========================================= */
 @media (max-width: 768px) {
-    /* 1. Ajuste de imagen y texto central */
-    .foto-perfil { width: 120px; height: 120px; margin-bottom: 10px; }
-    .info-texto h1 { font-size: 24px; }
-    .info-texto p { font-size: 12px; }
+    /* 1. Ajuste de imagen y texto central: MÁS PEQUEÑO */
+    .foto-perfil { 
+        width: 90px; 
+        height: 90px; 
+        margin-bottom: 10px; 
+        border-width: 1px; /* Borde más fino */
+    }
+    .info-texto h1 { font-size: 18px; } /* Texto nombre más pequeño */
+    .info-texto p { font-size: 11px; } /* Descripción más pequeña */
 
-    /* 2. Ajuste del anillo interior (Borde negro suavizado) */
-    .anillo-grueso::after {
-        inset: 12px; 
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); 
+    /* 2. Ajuste del anillo interior (Grosor mediante PADDING) */
+    .anillo-grueso {
+        padding: 3px; /* Borde de 3px de grosor en móvil */
     }
 
     /* 3. Menú */
@@ -318,7 +287,7 @@ body.pagina-planes { height: auto; display: block; overflow-x: hidden; }
     .estrella-gigante-nav { opacity: 0.05; stroke-width: 0.5px; }
     
     .pregunta-final { 
-        font-size: 22px; 
+        font-size: 20px; 
         max-width: 90%; 
         transform: translate(0, 0); 
         margin-bottom: 20px; 
