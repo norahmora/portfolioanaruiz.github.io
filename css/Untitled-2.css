@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Chivo:ital,wght@0,100..900;1,100..900&display=swap');
 
 /* =========================================
-   1. CONFIGURACIÓN GENERAL Y FUENTES
+   1. CONFIGURACIÓN GENERAL
    ========================================= */
 body {
     background-color: #000;
@@ -10,10 +10,7 @@ body {
     font-family: "Chivo", sans-serif;
     color: white;
     position: relative; 
-    
-    /* --- CONFIGURACIÓN PARA SCROLLYTELLING (HOMEPAGE) --- */
-    height: 400vh; 
-    
+    height: 400vh; /* Altura para el scroll */
     display: flex;
     justify-content: center;
     align-items: flex-start; 
@@ -26,348 +23,167 @@ h1, .menu-nombre, .menu-links-body a, .menu-claim, .titulo-alfa {
 }
 
 /* =========================================
-   2. ESCENA PRINCIPAL (HOMEPAGE - FIXED)
+   2. HOMEPAGE (ESCENA Y LÍQUIDO)
    ========================================= */
 .escena {
     position: fixed; 
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%); 
-    
-    width: 90vw; 
-    max-width: 650px;
-    aspect-ratio: 1 / 1; 
-    height: auto; 
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 90vw; max-width: 650px;
+    aspect-ratio: 1 / 1; height: auto; 
+    display: flex; justify-content: center; align-items: center;
     z-index: 1; 
 }
-
 .anillo-fino-exterior {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border: 1px solid #333;
-    border-radius: 50%;
-    z-index: 1;
+    position: absolute; width: 100%; height: 100%;
+    border: 1px solid #333; border-radius: 50%; z-index: 1;
+    pointer-events: none;
 }
 
-.anillo-grueso {
+/* CONTENEDOR GOOEY */
+.contenedor-liquido {
     position: absolute;
-    width: 74%; 
-    height: 74%;
-    border-radius: 50%;
-    background: linear-gradient(#000, #000) padding-box, 
-                conic-gradient(from 0deg, 
-                    #fffec0, #96b9a8, #4a5f68, 
-                    #fffec0, #96b9a8, #4a5f68, 
-                    #fffec0) border-box;
-    border: 15px solid transparent;
-    box-shadow: 0 0 35px rgba(150, 185, 168, 0.4), 
-                inset 0 0 15px rgba(150, 185, 168, 0.1);
+    top: 0; left: 0; width: 100%; height: 100%;
+    filter: url('#goo'); /* Efecto fusión */
     z-index: 2;
-    animation: rotarAnillo 10s linear infinite;
+    pointer-events: none;
 }
 
-@keyframes rotarAnillo {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+/* ANILLO CENTRAL (Centrado perfecto) */
+.anillo-central-base {
+    position: absolute;
+    width: 74%; height: 74%;
+    top: 50%; left: 50%; 
+    transform: translate(-50%, -50%); /* Centrado geométrico */
+    border-radius: 50%;
+    
+    background: linear-gradient(#000, #000) padding-box, 
+                conic-gradient(from 0deg, #fffec0, #96b9a8, #4a5f68, #fffec0, #96b9a8, #4a5f68, #fffec0) border-box;
+    border: 15px solid transparent;
+    
+    animation: rotarAnillo 20s linear infinite;
 }
+@keyframes rotarAnillo { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+/* GOTAS (BLOBS) */
+.blob-item {
+    position: absolute;
+    width: 110px; height: 110px; /* Grande para rodear bien el icono */
+    border-radius: 50%;
+    
+    /* SOLUCIÓN DISQUETE: Usamos degradado radial suave */
+    /* Esto hace que parezca una esfera de luz, sin cortes rectos */
+    background: radial-gradient(circle, #fffec0 30%, #96b9a8 100%);
+    
+    /* Estado inicial: Invisible y pequeño (colapsado en su centro) */
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    
+    /* Transición de aparición (Efecto rebote/pop) */
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+}
+
+/* POSICIONES FIJAS (Coordenadas de los iconos: 17% y 83%) */
+.blob-0 { top: 17%; left: 17%; }
+.blob-1 { top: 17%; left: 83%; }
+.blob-2 { top: 83%; left: 17%; }
+.blob-3 { top: 83%; left: 83%; }
+
+/* ESTADO ACTIVO (JS añade esta clase) */
+/* Cuando se activa, crece a su tamaño natural (scale 1) y se hace visible */
+.blob-item.activo {
+    transform: translate(-50%, -50%) scale(1); 
+    opacity: 1;
+}
+
 
 /* =========================================
-   3. CONTENIDO CENTRAL (HOMEPAGE)
+   3. HOMEPAGE (CONTENIDO)
    ========================================= */
 .contenido-central {
-    position: relative;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    width: 100%; 
+    position: relative; z-index: 10;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; width: 100%; 
 }
-
 .foto-perfil {
-    width: 180px;
-    height: 180px;
-    background-color: #96b9a8;
-    border-radius: 50%;
-    margin-bottom: 25px;
-    overflow: hidden;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
-    will-change: transform;
+    width: 180px; height: 180px; background-color: #96b9a8;
+    border-radius: 50%; margin-bottom: 25px; overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.2); position: relative;
+    cursor: pointer; transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
 }
-
-.foto-perfil:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
-}
-
-.foto-perfil img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
+.foto-perfil:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 255, 255, 0.4); }
+.foto-perfil img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .overlay-sobre-mi {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5); opacity: 0;
+    display: flex; justify-content: center; align-items: center;
     transition: opacity 0.3s ease;
 }
-
-.overlay-sobre-mi span {
-    font-size: 15px;
-    font-weight: 500;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #fff;
-    font-family: "Chivo", sans-serif; 
-}
-
+.overlay-sobre-mi span { font-size: 15px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: #fff; }
 .foto-perfil:hover .overlay-sobre-mi { opacity: 1; }
-
-.info-texto {
-    max-width: 60%;
-    margin: 0 auto;
-}
-
-.info-texto h1 {
-    font-size: clamp(18px, 5vw, 24px);
-    margin: 0;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    font-weight: 400;
-    word-wrap: break-word; 
-    line-height: 1.2;
-}
-
-.info-texto p {
-    font-size: 13px;
-    color: #999;
-    margin-top: 8px;
-    font-family: "Chivo", sans-serif;
-    word-wrap: break-word;
-    line-height: 1.4;
-}
+.info-texto { max-width: 60%; margin: 0 auto; }
+.info-texto h1 { font-size: clamp(18px, 5vw, 24px); margin: 0; letter-spacing: 3px; text-transform: uppercase; line-height: 1.2; }
+.info-texto p { font-size: 13px; color: #999; margin-top: 8px; line-height: 1.4; }
 
 /* =========================================
-   4. ICONOS EXTERIORES E INTERACCIÓN
+   4. ICONOS EXTERIORES (Sin Linterna)
    ========================================= */
-.capa-iconos-svg {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 5;
-    pointer-events: none;
-}
+.capa-iconos-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; }
+.grupo-icono { cursor: pointer; transform-origin: center; transform-box: fill-box; transition: transform 0.5s ease-out; pointer-events: auto; }
+.circulo-exterior { fill: #000; stroke: #fff; stroke-width: 1; transition: all 0.5s ease; }
+.texto-hover { font-size: 13px; fill: #ccc; text-anchor: middle; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; font-weight: 500; }
 
-.grupo-icono {
-    cursor: pointer;
-    transform-origin: center;
-    transform-box: fill-box;
-    transition: transform 0.5s ease-out; 
-    pointer-events: auto;
-}
-
-.circulo-exterior {
-    fill: #000;
-    stroke: #fff;
-    stroke-width: 1;
-    transition: all 0.5s ease;
-}
-
-.texto-hover {
-    font-family: "Chivo", sans-serif;
-    font-size: 13px;
-    fill: #ccc; 
-    text-anchor: middle;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    pointer-events: none;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-}
-
-/* ESTILOS ACTIVOS (HOVER Y SCROLL) */
 .grupo-icono:hover { transform: scale(1.15); }
-.grupo-icono:hover .circulo-exterior {
-    stroke-width: 3px;
-    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.9));
-}
-.grupo-icono:hover .texto-hover {
-    opacity: 1;
-    fill: #fff;
-    font-weight: 700;
-    font-size: 15px;
-    text-shadow: 0 0 5px rgba(0,0,0,0.8);
-}
+.grupo-icono:hover .circulo-exterior { stroke-width: 3px; filter: drop-shadow(0 0 8px rgba(255, 254, 192, 0.6)); }
+.grupo-icono:hover .texto-hover { opacity: 1; fill: #fff; font-weight: 700; font-size: 15px; text-shadow: 0 0 5px rgba(0,0,0,0.8); }
 
-.grupo-icono.activo-scroll { transform: scale(1.15); }
-.grupo-icono.activo-scroll .circulo-exterior {
-    stroke-width: 3px;
-    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.9));
-}
-.grupo-icono.activo-scroll .texto-hover {
-    opacity: 1;
-    fill: #fff;
-    font-weight: 700;
-    font-size: 15px;
-    text-shadow: 0 0 5px rgba(0,0,0,0.8);
-}
-
+/* Activo por Scroll: Solo destacamos el icono, la "acción" está en el anillo deformado */
+.grupo-icono.activo-scroll { transform: scale(1.25); }
+.grupo-icono.activo-scroll .circulo-exterior { stroke-width: 4px; stroke: #fffec0; }
+.grupo-icono.activo-scroll .texto-hover { opacity: 1; fill: #fffec0; font-weight: 700; font-size: 16px; text-shadow: 0 0 10px rgba(0,0,0,0.8); }
 
 /* =========================================
-   5. MENÚ DESPLEGABLE Y NAVEGACIÓN
+   5. MENÚ
    ========================================= */
-.fixed-home-btn {
-    position: fixed;
-    top: 40px;
-    left: 40px;
-    z-index: 200;
-    font-family: "Alfa Slab One", serif;
-    color: #fffec0;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 18px;
-    letter-spacing: 1px;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
+.fixed-home-btn { position: fixed; top: 40px; left: 40px; z-index: 200; font-family: "Alfa Slab One", serif; color: #fffec0; text-decoration: none; text-transform: uppercase; font-size: 18px; letter-spacing: 1px; transition: opacity 0.3s ease, visibility 0.3s ease; }
 .fixed-home-btn:hover { opacity: 0.8; }
 .fixed-home-btn.oculto { opacity: 0; visibility: hidden; }
 
-.menu-trigger {
-    position: fixed;
-    top: 40px;
-    right: 40px;
-    width: 30px;
-    height: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    cursor: pointer;
-    z-index: 200;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
+.menu-trigger { position: fixed; top: 40px; right: 40px; width: 30px; height: 20px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; z-index: 200; transition: opacity 0.3s ease, visibility 0.3s ease; }
 .menu-trigger.oculto { opacity: 0; visibility: hidden; }
-
-.menu-trigger span {
-    display: block;
-    width: 100%;
-    height: 2px;
-    background-color: #fffec0; 
-    transition: all 0.3s ease;
-}
+.menu-trigger span { display: block; width: 100%; height: 2px; background-color: #fffec0; transition: all 0.3s ease; }
 .menu-trigger:hover span:nth-child(1) { transform: translateY(-2px); }
 .menu-trigger:hover span:nth-child(3) { transform: translateY(2px); }
 
-.navegacion-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #4a5f68; 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    z-index: 150;
-    padding: 40px;
-    box-sizing: border-box;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.4s ease-in-out;
-    color: #fffec0; 
-}
+.navegacion-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #4a5f68; display: flex; flex-direction: column; justify-content: space-between; z-index: 150; padding: 40px; box-sizing: border-box; opacity: 0; visibility: hidden; transition: all 0.4s ease-in-out; color: #fffec0; }
 .navegacion-overlay.activo { opacity: 1; visibility: visible; }
-
-.menu-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-    font-weight: bold;
-    font-size: 14px;
-    font-family: "Chivo", sans-serif;
-}
-.menu-nombre { text-transform: uppercase; font-family: "Alfa Slab One", serif; font-weight: 400; letter-spacing: 1px; }
-.menu-info-center a { text-decoration: none; color: inherit; font-family: "Chivo", sans-serif; }
-
-.btn-cerrar-container {
-    background-color: #fffec0;
-    color: #4a5f68; 
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 24px;
-    line-height: 1;
-}
-
+.menu-header { display: flex; justify-content: space-between; align-items: flex-start; width: 100%; font-weight: bold; font-size: 14px; }
+.menu-nombre { text-transform: uppercase; font-family: "Alfa Slab One", serif; }
+.menu-info-center a { text-decoration: none; color: inherit; }
+.btn-cerrar-container { background-color: #fffec0; color: #4a5f68; width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 24px; }
 .menu-links-body { flex-grow: 1; display: flex; justify-content: center; align-items: center; width: 100%; }
-.menu-links-body ul { list-style: none; padding: 0; margin: 0; text-align: left; width: 100%; }
+.menu-links-body ul { list-style: none; padding: 0; margin: 0; width: 100%; }
 .menu-links-body li { margin: 15px 0; opacity: 0; transform: translateY(20px); transition: all 0.4s ease; }
 .navegacion-overlay.activo .menu-links-body li { opacity: 1; transform: translateY(0); }
 .navegacion-overlay.activo .menu-links-body li:nth-child(1) { transition-delay: 0.1s; }
 .navegacion-overlay.activo .menu-links-body li:nth-child(2) { transition-delay: 0.2s; }
 .navegacion-overlay.activo .menu-links-body li:nth-child(3) { transition-delay: 0.3s; }
 .navegacion-overlay.activo .menu-links-body li:nth-child(4) { transition-delay: 0.4s; }
-
-.menu-links-body a {
-    text-decoration: none;
-    color: #fffec0;
-    font-size: 48px; 
-    line-height: 1.1;
-    display: inline-block; 
-    position: relative;
-    transition: font-size 0.3s;
-}
-.menu-links-body a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 3px;
-    bottom: -2px;
-    left: 0;
-    background-color: #fffec0;
-    transition: width 0.3s ease;
-}
+.menu-links-body a { text-decoration: none; color: #fffec0; font-size: 48px; line-height: 1.1; display: inline-block; position: relative; transition: font-size 0.3s; }
+.menu-links-body a::after { content: ''; position: absolute; width: 0; height: 3px; bottom: -2px; left: 0; background-color: #fffec0; transition: width 0.3s ease; }
 .menu-links-body a:hover::after { width: 100%; }
-
-.menu-footer { display: flex; justify-content: space-between; align-items: flex-end; width: 100%; font-size: 12px; font-weight: bold; font-family: "Chivo", sans-serif; }
+.menu-footer { display: flex; justify-content: space-between; align-items: flex-end; font-size: 12px; font-weight: bold; }
 .menu-redes-sociales { display: flex; gap: 20px; }
-.menu-icono-social { display: block; width: 24px; height: 24px; transition: transform 0.3s ease; }
-.menu-icono-social img { width: 100%; height: 100%; filter: invert(1); }
-.menu-icono-social:hover { transform: translateY(-3px); }
-.menu-claim { text-transform: uppercase; letter-spacing: 1px; font-size: 12px; }
-
-/* =========================================
-   6. RESPONSIVE / MEDIA QUERY (MÓVIL GLOBAL)
-   ========================================= */
+.menu-icono-social img { width: 24px; height: 24px; filter: invert(1); }
+.menu-claim { text-transform: uppercase; letter-spacing: 1px; }
 @media (max-width: 768px) {
     .foto-perfil { width: 130px; height: 130px; margin-bottom: 15px; }
     .menu-links-body a { font-size: 28px; }
-    .menu-links-body li { border-bottom: 1px solid rgba(255, 254, 192, 0.3); padding-bottom: 15px; margin-bottom: 15px; width: 100%; }
-    .menu-links-body li:last-child { border-bottom: none; margin-bottom: 0; }
-    .navegacion-overlay { padding: 20px; }
-    .menu-header { font-size: 12px; flex-wrap: wrap; gap: 10px; }
+    .menu-links-body li { border-bottom: 1px solid rgba(255, 254, 192, 0.3); padding-bottom: 15px; }
     .menu-info-center { display: none; }
     .menu-footer { flex-direction: column; align-items: center; gap: 15px; }
-    .texto-hover { font-size: 15px; font-weight: 700; letter-spacing: 0.5px; text-shadow: 0px 0px 3px #000; }
+    .texto-hover { font-size: 15px; font-weight: 700; text-shadow: 0px 0px 3px #000; }
     .anillo-grueso { border: 10px solid transparent; }
 }
 
@@ -375,44 +191,28 @@ h1, .menu-nombre, .menu-links-body a, .menu-claim, .titulo-alfa {
    7. PÁGINA PLANES: LAYOUT Y CAPAS FIJAS
    ========================================= */
 
-/* Override para la página de planes: altura automática y block */
 body.pagina-planes {
     height: auto; 
     display: block; 
     overflow-x: hidden;
 }
 
-/* --- ELEMENTO INVISIBLE QUE GENERA EL SCROLL --- */
 .scroll-trigger {
-    /* Altura que define cuánto dura la animación. 
-       200vh = 2 pantallas de scroll. Ajusta si quieres más o menos velocidad */
-    height: 250vh; 
-    width: 1px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    pointer-events: none;
+    height: 600vh; 
+    width: 1px; position: absolute; top: 0; left: 0; z-index: -1; pointer-events: none;
 }
 
-/* --- CAPA 1: LA PORTADA (ARRIBA - Z-INDEX 50) --- */
+/* --- CAPA 1: PORTADA --- */
 .planes-hero-fixed {
-    position: fixed; 
-    top: 0; left: 0; width: 100%; height: 100vh;
-    background-color: #000; /* IMPORTANTE: Fondo negro sólido para tapar lo de abajo */
-    
-    display: flex; flex-direction: column; 
-    justify-content: center; align-items: center; text-align: center;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background-color: #000; 
+    display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
     padding: 20px; box-sizing: border-box;
-    z-index: 50; /* Por encima de todo */
-    
+    z-index: 50; 
     transform-origin: center center;
-    
-    /* CAMBIO CRUCIAL: Eliminada la transition de opacity para evitar el lag/flash */
     will-change: opacity, transform; 
 }
 
-/* Textos internos de la portada */
 .texto-superior {
     color: #fffec0; font-size: clamp(14px, 3vw, 18px); font-weight: 300; 
     letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px;
@@ -434,42 +234,138 @@ body.pagina-planes {
     max-width: 600px; margin: 30px auto 0; line-height: 1.4;
 }
 
-/* --- CAPA 2: QUÉ OFREZCO (ABAJO - Z-INDEX 40) --- */
+/* --- CAPA 2: OFERTA --- */
 .seccion-oferta-fixed {
-    position: fixed; 
-    top: 0; left: 0; width: 100%; height: 100vh;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
     background: linear-gradient(135deg, #000000 0%, #4a5f68 100%);
     display: flex; flex-direction: column; justify-content: flex-end;
     padding: 60px 60px 40px 60px; box-sizing: border-box;
-    z-index: 40; /* Detrás de la portada */
+    z-index: 40; will-change: opacity;
 }
 
-/* Estilos de Qué Ofrezco */
-.texto-crema { color: #fffec0; font-family: "Chivo", sans-serif; }
-
-.header-nombre {
-    position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
-    font-size: 18px; letter-spacing: 1px; z-index: 10; text-decoration: none; color: #fffec0;
-    text-align: center; width: 100%; cursor: pointer; transition: opacity 0.3s;
-}
+.texto-crema { color: #fffec0; }
+.header-nombre { position: absolute; top: 40px; left: 50%; transform: translateX(-50%); font-size: 18px; letter-spacing: 1px; z-index: 10; text-decoration: none; color: #fffec0; text-align: center; width: 100%; cursor: pointer; transition: opacity 0.3s; }
 .header-nombre:hover { opacity: 0.8; }
-
 .contenido-principal { position: relative; z-index: 10; max-width: 550px; margin-bottom: 0; }
 .titulo-oferta { font-size: clamp(24px, 4vw, 40px); margin: 0 0 10px 0; line-height: 1; }
 .linea-separadora { border: none; height: 2px; background-color: #fffec0; width: 100%; margin: 15px 0; opacity: 0.5; }
 .parrafo-oferta { font-size: clamp(13px, 1.5vw, 15px); line-height: 1.5; margin: 0; font-weight: 300; opacity: 0.7; }
-
-.estrella-fondo-container {
-    position: absolute; top: 50%; right: -40%; transform: translateY(-50%);
-    width: 120vh; height: 120vh; pointer-events: none; z-index: 1; opacity: 0.4; mix-blend-mode: overlay;
-}
+.estrella-fondo-container { position: absolute; top: 50%; right: -40%; transform: translateY(-50%); width: 120vh; height: 120vh; pointer-events: none; z-index: 1; opacity: 0.4; mix-blend-mode: overlay; }
 .estrella-svg { width: 100%; height: 100%; stroke: #fffec0; stroke-width: 1; fill: none; filter: drop-shadow(0 0 20px rgba(150, 185, 168, 0.6)); }
 
+/* --- CAPA 3: FASES --- */
+.seccion-fases-fixed {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background: linear-gradient(135deg, #000000 0%, #4a5f68 100%);
+    z-index: 30; padding: 120px 60px 40px 60px;
+    box-sizing: border-box; display: flex; flex-direction: column; 
+    color: #fffec0; will-change: opacity;
+}
+
+.fases-header-container { width: 100%; margin-bottom: 40px; }
+.text-align-right { text-align: right; margin: 0 0 15px 0; font-size: clamp(20px, 3vw, 28px); font-weight: 400; letter-spacing: 1px; }
+.linea-fading-inversa { width: 100%; height: 1px; background: linear-gradient(to right, transparent 0%, rgba(255, 254, 192, 0.8) 100%); }
+
+.boton-container-right { display: flex; justify-content: flex-end; margin-top: 25px; }
+.contacto-wrapper {
+    position: relative; display: inline-flex; align-items: center; text-decoration: none;
+    padding: 8px 25px 8px 0; cursor: pointer; height: 40px; 
+}
+.contacto-bg {
+    position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    width: 40px; height: 40px; background-color: #fffec0; border-radius: 20px; 
+    z-index: -1; transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
+}
+.estrella-contacto-azul {
+    width: 24px; height: 24px; stroke: #4a5f68; fill: none;
+    margin-left: 8px; margin-right: 20px; 
+    position: relative; z-index: 2; 
+}
+.contacto-texto {
+    font-family: "Alfa Slab One", serif; font-size: 14px; color: #4a5f68; 
+    text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; position: relative; z-index: 2;
+}
+.contacto-wrapper:hover .contacto-bg { width: 100%; border-radius: 30px; }
+
+.fases-layout-grid-filas {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: auto auto; 
+    column-gap: 40px; row-gap: 60px; flex-grow: 1; align-content: flex-start;
+}
+.fase-bloque { text-align: left; }
+.num-fase-small { font-size: clamp(40px, 5vw, 60px); line-height: 1; margin-bottom: 15px; opacity: 0.9; color: #fffec0; }
+.titulo-fase-small { font-family: "Chivo", sans-serif; font-weight: 700; text-transform: uppercase; font-size: 14px; margin: 0 0 10px 0; letter-spacing: 1px; color: #fffec0; }
+.info-fase-small p { font-family: "Chivo", sans-serif; font-size: 13px; color: rgba(255, 254, 192, 0.7); margin: 5px 0; line-height: 1.4; }
+
+/* --- CAPA 4: FINAL --- */
+.seccion-final-fixed {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background: linear-gradient(135deg, #000000 0%, #4a5f68 100%);
+    z-index: 20; display: flex; justify-content: center; align-items: center;
+    overflow: hidden; 
+}
+
+.contenido-centro-estrella {
+    position: relative; width: 100%; height: 100%;
+    display: flex; justify-content: center; align-items: center;
+}
+
+.estrella-gigante-nav {
+    position: absolute; width: 150vmax; height: 150vmax;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    opacity: 0.07; pointer-events: none;
+}
+.estrella-gigante-nav svg {
+    width: 100%; height: 100%; stroke: #fffec0; fill: none; stroke-width: 0.8px; 
+}
+
+.pregunta-final {
+    position: relative; z-index: 20; text-align: center; color: #fffec0;
+    font-size: clamp(30px, 5vw, 50px); line-height: 1.2;
+    text-shadow: 0 0 20px rgba(0,0,0,1); margin: 0;
+    pointer-events: none; transition: transform 0.3s ease;
+}
+.contenido-centro-estrella:hover .pregunta-final { transform: scale(1.05); text-shadow: 0 0 30px rgba(255, 254, 192, 0.4); }
+
+.btn-nav-final {
+    position: absolute; z-index: 10; text-decoration: none;
+    font-family: "Chivo", sans-serif; font-weight: 800; font-size: 15px;
+    text-transform: uppercase; letter-spacing: 1px;
+    padding: 14px 30px; border-radius: 50px; white-space: nowrap;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
+    background-color: #fffec0; color: #4a5f68; border: 2px solid #fffec0; 
+}
+.btn-nav-final:hover {
+    background-color: #ffffff; color: #4a5f68; border-color: #ffffff;
+    box-shadow: 0 0 35px rgba(255, 254, 192, 0.9); z-index: 25; 
+}
+
+@media (min-width: 769px) {
+    .btn-nav-final {
+        top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.2) rotate(-180deg); opacity: 0;
+        transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s, color 0.3s, box-shadow 0.3s; 
+    }
+    .contenido-centro-estrella:hover .btn-top { top: 18%; left: 50%; transform: translateX(-50%) scale(1) rotate(0deg); opacity: 1; transition-delay: 0s; }
+    .contenido-centro-estrella:hover .btn-right { top: 50%; right: 12%; left: auto; transform: translateY(-50%) scale(1) rotate(0deg); opacity: 1; transition-delay: 0.1s; }
+    .contenido-centro-estrella:hover .btn-bottom { bottom: 18%; top: auto; left: 50%; transform: translateX(-50%) scale(1) rotate(0deg); opacity: 1; transition-delay: 0.2s; }
+    .contenido-centro-estrella:hover .btn-left { top: 50%; left: 12%; transform: translateY(-50%) scale(1) rotate(0deg); opacity: 1; transition-delay: 0.3s; }
+    
+    .contenido-centro-estrella:hover .btn-top:hover { transform: translateX(-50%) scale(1.15) rotate(0deg); transition-delay: 0s; }
+    .contenido-centro-estrella:hover .btn-right:hover { transform: translateY(-50%) scale(1.15) rotate(0deg); transition-delay: 0s; }
+    .contenido-centro-estrella:hover .btn-bottom:hover { transform: translateX(-50%) scale(1.15) rotate(0deg); transition-delay: 0s; }
+    .contenido-centro-estrella:hover .btn-left:hover { transform: translateY(-50%) scale(1.15) rotate(0deg); transition-delay: 0s; }
+}
+
+@media (max-width: 900px) {
+    .fases-layout-grid-filas { grid-template-columns: 1fr; row-gap: 40px; padding-bottom: 80px; overflow-y: auto; }
+    .seccion-fases-fixed { padding: 100px 30px 20px 30px; }
+}
+
 @media (max-width: 768px) {
-    .seccion-oferta-fixed { padding: 30px; justify-content: flex-end; }
-    .header-nombre { top: 25px; left: 50%; transform: translateX(-50%); font-size: 14px; }
-    .contenido-principal { max-width: 100%; }
-    .estrella-fondo-container { right: -50%; opacity: 0.3; }
-    .texto-superior { letter-spacing: 2px; }
-    .titulo-planes { font-size: clamp(50px, 12vw, 100px); }
+    .estrella-gigante-nav { opacity: 0.05; stroke-width: 0.5px; }
+    .pregunta-final { font-size: 24px; max-width: 80%; }
+    .btn-nav-final { font-size: 12px; padding: 10px 20px; transition: transform 0.3s; }
+    .btn-top { top: 25%; left: 50%; transform: translateX(-50%); }
+    .btn-bottom { bottom: 25%; left: 50%; transform: translateX(-50%); }
+    .btn-left { left: 8%; top: 50%; transform: translateY(-50%); }
+    .btn-right { right: 8%; top: 50%; transform: translateY(-50%); }
 }

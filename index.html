@@ -2,32 +2,33 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>WEB-ANA - Diseño Final Tipografías</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>WEB-ANA - Diseño Final Tipografías</title>
 <link rel="stylesheet" href="estilos.css">
 <link href="css/Untitled-2.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
+    <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+                <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+            </filter>
+        </defs>
+    </svg>
+
     <div class="menu-trigger" id="btnAbrirMenu">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
     </div>
 
     <nav class="navegacion-overlay" id="navOverlay">
-        
         <div class="menu-header">
-            <div class="menu-info-left">
-                <span class="menu-nombre">Ana Ruíz</span>
-            </div>
-            <div class="menu-info-center">
-                <a href="mailto:ana@anaruiz.com">ana@anaruiz.com</a>
-            </div>
-            <div class="btn-cerrar-container" id="btnCerrarMenu">
-                <span>&times;</span>
-            </div>
+            <div class="menu-info-left"><span class="menu-nombre">Ana Ruíz</span></div>
+            <div class="menu-info-center"><a href="mailto:ana@anaruiz.com">ana@anaruiz.com</a></div>
+            <div class="btn-cerrar-container" id="btnCerrarMenu"><span>&times;</span></div>
         </div>
-
         <div class="menu-links-body">
             <ul>
                 <li><a href="plan-igualdad.html">Planes de Igualdad</a></li>
@@ -36,30 +37,26 @@
                 <li><a href="#violencia">Violencia de Género</a></li>
             </ul>
         </div>
-
         <div class="menu-footer">
             <div class="menu-redes-sociales">
-                <a href="#" target="_blank" class="menu-icono-social">
-                    <img src="https://cdn-icons-png.flaticon.com/512/1384/1384088.png" alt="LinkedIn">
-                </a>
-                <a href="#" target="_blank" class="menu-icono-social">
-                    <img src="https://cdn-icons-png.flaticon.com/512/1384/1384047.png" alt="Instagram">
-                </a>
+                <a href="#" target="_blank" class="menu-icono-social"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384088.png" alt="LinkedIn"></a>
+                <a href="#" target="_blank" class="menu-icono-social"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384047.png" alt="Instagram"></a>
             </div>
-            
-            <div class="menu-claim">
-                <span>Diseñando un futuro igualitario.</span>
-            </div>
+            <div class="menu-claim"><span>Diseñando un futuro igualitario.</span></div>
         </div>
     </nav>
 
     <div class="escena">
         
         <div class="anillo-fino-exterior"></div>
-        <div class="anillo-grueso"></div>
+        
+        <div class="contenedor-liquido">
+            
+            <div class="anillo-central-base"></div>
+            
+            <div class="blob-item blob-0" id="blob0"></div> <div class="blob-item blob-1" id="blob1"></div> <div class="blob-item blob-2" id="blob2"></div> <div class="blob-item blob-3" id="blob3"></div> </div>
 
         <svg class="capa-iconos-svg" viewBox="0 0 650 650">
-            
             <a href="plan-igualdad.html">
                 <g class="grupo-icono">
                     <circle class="circulo-exterior" cx="110" cy="110" r="35" />
@@ -67,7 +64,6 @@
                     <text class="texto-hover" x="110" y="60">Planes de Igualdad</text>
                 </g>
             </a>
-
             <a href="#intervencion">
                 <g class="grupo-icono">
                     <circle class="circulo-exterior" cx="540" cy="110" r="35" />
@@ -75,7 +71,6 @@
                     <text class="texto-hover" x="540" y="60">Intervención Social</text>
                 </g>
             </a>
-
             <a href="#sobre-mi">
                 <g class="grupo-icono">
                     <circle class="circulo-exterior" cx="110" cy="540" r="35" />
@@ -83,7 +78,6 @@
                     <text class="texto-hover" x="110" y="600">Sobre mí</text>
                 </g>
             </a>
-
             <a href="#violencia">
                 <g class="grupo-icono">
                     <circle class="circulo-exterior" cx="540" cy="540" r="35" />
@@ -91,17 +85,15 @@
                     <text class="texto-hover" x="540" y="600">Violencia de Género</text>
                 </g>
             </a>
-
         </svg>
 
         <div class="contenido-central">
             <div class="foto-perfil">
-                <img src="IMG_7575.PNG" alt="Ana Ruiz">
+                <img src="IMG_7575.PNG" alt="Ana Ruiz"> 
                 <div class="overlay-sobre-mi">
                     <span>Contacto</span>
                 </div>
             </div>
-            
             <div class="info-texto">
                 <h1>ANA RUÍZ</h1>
                 <p>Intervención, igualdad y políticas de género</p>
@@ -109,6 +101,6 @@
         </div>
 
     </div>
-	<script src="js/ana.js"></script>
+    <script src="js/ana.js"></script>
 </body>
 </html>

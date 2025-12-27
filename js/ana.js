@@ -1,5 +1,5 @@
 /* =========================================
-   LÓGICA DEL MENÚ DESPLEGABLE
+   LÓGICA DEL MENÚ DESPLEGABLE (GLOBAL)
    ========================================= */
 const abrirMenu = document.getElementById('btnAbrirMenu');
 const cerrarMenu = document.getElementById('btnCerrarMenu');
@@ -31,72 +31,111 @@ enlacesMenu.forEach(enlace => {
 });
 
 /* =========================================
-   LÓGICA 1: SCROLLYTELLING (SOLO HOMEPAGE)
+   LÓGICA 1: SCROLLYTELLING (GOTAS ESTÁTICAS)
    ========================================= */
 const gruposIconos = document.querySelectorAll('.grupo-icono');
-if (gruposIconos.length > 0) {
+// Seleccionamos las 4 gotas individuales
+const blob0 = document.getElementById('blob0');
+const blob1 = document.getElementById('blob1');
+const blob2 = document.getElementById('blob2');
+const blob3 = document.getElementById('blob3');
+const blobs = [blob0, blob1, blob2, blob3];
+
+if (gruposIconos.length > 0 && blob0) {
     window.addEventListener('scroll', () => {
-        const maxScroll = document.body.scrollHeight - window.innerHeight;
-        if (maxScroll === 0) return;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        if (maxScroll <= 0) return;
         const porcentajeScroll = window.scrollY / maxScroll;
 
-        gruposIconos.forEach(icono => { icono.classList.remove('activo-scroll'); });
+        // 1. Limpieza: Apagamos todos los iconos y gotas
+        gruposIconos.forEach(i => i.classList.remove('activo-scroll'));
+        blobs.forEach(b => b.classList.remove('activo'));
 
-        if (porcentajeScroll < 0.25) gruposIconos[0].classList.add('activo-scroll');
-        else if (porcentajeScroll >= 0.25 && porcentajeScroll < 0.50) gruposIconos[1].classList.add('activo-scroll');
-        else if (porcentajeScroll >= 0.50 && porcentajeScroll < 0.75) gruposIconos[2].classList.add('activo-scroll');
-        else gruposIconos[3].classList.add('activo-scroll');
+        // 2. Lógica de activación
+        
+        // < 5%: Todo apagado
+        if (porcentajeScroll < 0.05) return; 
+        
+        // 05% - 25%: Arriba Izquierda
+        else if (porcentajeScroll >= 0.05 && porcentajeScroll < 0.25) {
+            gruposIconos[0].classList.add('activo-scroll');
+            blob0.classList.add('activo');
+        } 
+        
+        // 25% - 50%: Arriba Derecha
+        else if (porcentajeScroll >= 0.25 && porcentajeScroll < 0.50) {
+            gruposIconos[1].classList.add('activo-scroll');
+            blob1.classList.add('activo');
+        } 
+        
+        // 50% - 75%: Abajo Izquierda
+        else if (porcentajeScroll >= 0.50 && porcentajeScroll < 0.75) {
+            gruposIconos[2].classList.add('activo-scroll');
+            blob2.classList.add('activo');
+        } 
+        
+        // +75%: Abajo Derecha
+        else if (porcentajeScroll >= 0.75) {
+            gruposIconos[3].classList.add('activo-scroll');
+            blob3.classList.add('activo');
+        }
     });
+    
     window.dispatchEvent(new Event('scroll'));
 }
 
 /* =========================================
-   LÓGICA 2: ZOOM PORTADA (SOLO PLANES DE IGUALDAD)
+   LÓGICA 2: ZOOM Y CAPAS (SOLO PLANES DE IGUALDAD)
    ========================================= */
 const textoZoom = document.getElementById('textoZoom');
 const capaPortada = document.getElementById('capaPortada'); 
+const capaOferta = document.getElementById('capaOferta');   
+const capaFases = document.getElementById('capaFases');     
 
-if (textoZoom && capaPortada) {
+if (textoZoom && capaPortada && capaOferta && capaFases) {
     window.addEventListener('scroll', () => {
         const scrollY = window.scrollY;
         const windowHeight = window.innerHeight;
-        
-        // Ajustamos la sensibilidad:
-        // Trigger height es el total de scroll disponible.
-        // Restamos una pantalla para que el cálculo sea preciso.
-        const triggerHeight = (windowHeight * 3) - windowHeight; // Basado en 300vh del CSS
+        const maxScroll = document.body.scrollHeight - windowHeight;
 
-        // 1. ZOOM:
-        // Hacemos que el zoom empiece suave y acelere
-        const scale = 1 + (scrollY / windowHeight) * 50;
-        
-        // Aplicamos el scale asegurando que no baje de 1
+        if (maxScroll <= 0) return;
+
+        // FASE 1: PORTADA
+        const zoomLimit = windowHeight * 0.5;
+        let scale = 1;
+        if (scrollY < zoomLimit) scale = 1 + (scrollY / windowHeight) * 60;
+        else scale = 60;
         textoZoom.style.transform = `scale(${Math.max(1, scale)})`;
 
-        // 2. OPACIDAD:
-        // Queremos que la capa superior (Negra) se desvanezca poco a poco.
-        // Empezamos a desvanecer al 10% del scroll para dar tiempo a ver el zoom inicial
-        const startFade = windowHeight * 0.1;
-        
-        let opacity = 1;
-        
-        if (scrollY > startFade) {
-            // Calculamos opacidad de 1 a 0
-            opacity = 1 - (scrollY - startFade) / (triggerHeight * 0.7);
-        }
-        
-        // Clamp (limites) entre 0 y 1 para evitar errores
-        opacity = Math.max(0, Math.min(1, opacity));
-        
-        capaPortada.style.opacity = opacity;
+        let opacityPortada = 1;
+        const startFade1 = windowHeight * 0.1;
+        const endFade1 = windowHeight * 0.5;
+        if (scrollY > startFade1) opacityPortada = 1 - (scrollY - startFade1) / (endFade1 - startFade1);
+        opacityPortada = Math.max(0, Math.min(1, opacityPortada));
+        capaPortada.style.opacity = opacityPortada;
+        if (opacityPortada < 0.05) capaPortada.style.pointerEvents = 'none';
+        else capaPortada.style.pointerEvents = 'auto';
 
-        // 3. INTERACCIÓN (Pointer Events en lugar de Visibility)
-        // Si la capa es casi invisible (< 5%), desactivamos sus clics para poder tocar lo de abajo.
-        // Si subimos y vuelve a ser visible (> 5%), reactivamos los clics.
-        if (opacity < 0.05) {
-            capaPortada.style.pointerEvents = 'none';
-        } else {
-            capaPortada.style.pointerEvents = 'auto';
-        }
+        // FASE 2: QUÉ OFREZCO
+        let opacityOferta = 1;
+        const startFade2 = maxScroll * 0.25; 
+        const endFade2 = maxScroll * 0.45;
+        if (scrollY > startFade2) opacityOferta = 1 - (scrollY - startFade2) / (endFade2 - startFade2);
+        opacityOferta = Math.max(0, Math.min(1, opacityOferta));
+        capaOferta.style.opacity = opacityOferta;
+        if (opacityOferta < 0.05) capaOferta.style.pointerEvents = 'none';
+        else capaOferta.style.pointerEvents = 'auto';
+
+        // FASE 3: LAS 5 FASES
+        let opacityFases = 1;
+        const startFade3 = maxScroll * 0.60; 
+        const endFade3 = maxScroll * 0.80;   
+        if (scrollY > startFade3) opacityFases = 1 - (scrollY - startFade3) / (endFade3 - startFade3);
+        opacityFases = Math.max(0, Math.min(1, opacityFases));
+        capaFases.style.opacity = opacityFases;
+        if (opacityFases < 0.05) capaFases.style.pointerEvents = 'none';
+        else capaFases.style.pointerEvents = 'auto';
     });
+    
+    window.dispatchEvent(new Event('scroll'));
 }

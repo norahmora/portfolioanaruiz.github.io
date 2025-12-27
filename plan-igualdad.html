@@ -10,10 +10,9 @@
 <body class="pagina-planes">
 
     <a href="index.html" class="fixed-home-btn">HOME</a>
+    
     <div class="menu-trigger" id="btnAbrirMenu">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
     </div>
 
     <nav class="navegacion-overlay" id="navOverlay">
@@ -35,7 +34,7 @@
                 <a href="#" target="_blank" class="menu-icono-social"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384088.png" alt="LinkedIn"></a>
                 <a href="#" target="_blank" class="menu-icono-social"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384047.png" alt="Instagram"></a>
             </div>
-            <div class="menu-claim"><span>Diseñando un futuro igualitario.</span></div>
+            <div class="menu-claim"><span>Te ayudo a planear la igualdad e implementarla.</span></div>
         </div>
     </nav>
 
@@ -47,7 +46,7 @@
         <div class="texto-inferior">Diseño, implantación, seguimiento y evaluación conforme a la normativa vigente</div>
     </main>
 
-    <section class="seccion-oferta-fixed">
+    <section class="seccion-oferta-fixed" id="capaOferta">
         <a href="index.html#sobre-mi" class="header-nombre titulo-alfa texto-crema">ANA RUÍZ</a>
         <div class="contenido-principal texto-crema">
             <h2 class="titulo-oferta titulo-alfa">QUÉ OFREZCO</h2>
@@ -55,16 +54,82 @@
             <p class="parrafo-oferta">Acompañamiento técnico en todo el proceso de creación e implementación de Planes de Igualdad, integrando perspectiva de género, negociación colectiva y prevención de violencias en el entorno laboral.</p>
         </div>
         <div class="estrella-fondo-container">
-            <svg class="estrella-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-                <line x1="0" y1="250" x2="500" y2="250" stroke-width="2"/>
-                <line x1="250" y1="0" x2="250" y2="500" stroke-width="2"/>
-                <line x1="50" y1="50" x2="450" y2="450" stroke-width="1.5"/>
-                <line x1="450" y1="50" x2="50" y2="450" stroke-width="1.5"/>
-                <line x1="150" y1="20" x2="350" y2="480" stroke-width="0.5" opacity="0.7"/>
-                <line x1="350" y1="20" x2="150" y2="480" stroke-width="0.5" opacity="0.7"/>
-                <line x1="20" y1="150" x2="480" y2="350" stroke-width="0.5" opacity="0.7"/>
-                <line x1="20" y1="350" x2="480" y2="150" stroke-width="0.5" opacity="0.7"/>
-            </svg>
+            <svg class="estrella-svg" viewBox="0 0 500 500"><line x1="0" y1="250" x2="500" y2="250" stroke-width="2"/><line x1="250" y1="0" x2="250" y2="500" stroke-width="2"/><line x1="50" y1="50" x2="450" y2="450" stroke-width="1.5"/><line x1="450" y1="50" x2="50" y2="450" stroke-width="1.5"/><line x1="150" y1="20" x2="350" y2="480" stroke-width="0.5" opacity="0.7"/><line x1="350" y1="20" x2="150" y2="480" stroke-width="0.5" opacity="0.7"/><line x1="20" y1="150" x2="480" y2="350" stroke-width="0.5" opacity="0.7"/><line x1="20" y1="350" x2="480" y2="150" stroke-width="0.5" opacity="0.7"/></svg>
+        </div>
+    </section>
+
+    <section class="seccion-fases-fixed" id="capaFases">
+        
+        <div class="fases-header-container">
+            <h2 class="titulo-alfa text-align-right">LAS 5 FASES</h2>
+            <div class="linea-fading-inversa"></div>
+            
+            <div class="boton-container-right">
+                <a href="mailto:ana@anaruiz.com" class="contacto-wrapper">
+                    <div class="contacto-bg"></div>
+                    <svg class="estrella-contacto-azul" viewBox="0 0 500 500">
+                        <line x1="0" y1="250" x2="500" y2="250" stroke-width="20"/>
+                        <line x1="250" y1="0" x2="250" y2="500" stroke-width="20"/>
+                        <line x1="50" y1="50" x2="450" y2="450" stroke-width="15"/>
+                        <line x1="450" y1="50" x2="50" y2="450" stroke-width="15"/>
+                    </svg>
+                    <span class="contacto-texto">CONTACTO</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="fases-layout-grid-filas">
+            <div class="fase-bloque">
+                <div class="num-fase-small titulo-alfa">01</div>
+                <h3 class="titulo-fase-small">Puesta en marcha</h3>
+                <div class="info-fase-small"><p>Constitución de la comisión</p><p>Definición del marco de actuación</p></div>
+            </div>
+            <div class="fase-bloque">
+                <div class="num-fase-small titulo-alfa">02</div>
+                <h3 class="titulo-fase-small">Diagnóstico</h3>
+                <div class="info-fase-small"><p>Análisis de la situación</p><p>Identificación de desigualdades</p></div>
+            </div>
+            <div></div>
+
+            <div class="fase-bloque">
+                <div class="num-fase-small titulo-alfa">03</div>
+                <h3 class="titulo-fase-small">Diseño y registro</h3>
+                <div class="info-fase-small"><p>Definición de medidas</p><p>Elaboración del plan</p><p>Aprobación oficial</p></div>
+            </div>
+            <div class="fase-bloque">
+                <div class="num-fase-small titulo-alfa">04</div>
+                <h3 class="titulo-fase-small">Implantación</h3>
+                <div class="info-fase-small"><p>Aplicación de las medidas</p><p>Seguimiento continuo</p></div>
+            </div>
+            <div class="fase-bloque">
+                <div class="num-fase-small titulo-alfa">05</div>
+                <h3 class="titulo-fase-small">Evaluación</h3>
+                <div class="info-fase-small"><p>Evaluación de resultados</p><p>Propuestas de mejora</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="seccion-final-fixed" id="capaFinal">
+        <div class="contenido-centro-estrella">
+            <div class="estrella-gigante-nav">
+                <svg viewBox="0 0 500 500">
+                    <line x1="0" y1="250" x2="500" y2="250" stroke-width="2"/>
+                    <line x1="250" y1="0" x2="250" y2="500" stroke-width="2"/>
+                    <line x1="50" y1="50" x2="450" y2="450" stroke-width="1.5"/>
+                    <line x1="450" y1="50" x2="50" y2="450" stroke-width="1.5"/>
+                    <line x1="150" y1="20" x2="350" y2="480" stroke-width="0.5" opacity="0.7"/>
+                    <line x1="350" y1="20" x2="150" y2="480" stroke-width="0.5" opacity="0.7"/>
+                    <line x1="20" y1="150" x2="480" y2="350" stroke-width="0.5" opacity="0.7"/>
+                    <line x1="20" y1="350" x2="480" y2="150" stroke-width="0.5" opacity="0.7"/>
+                </svg>
+            </div>
+
+            <h2 class="pregunta-final titulo-alfa">¿QUÉ QUIERES<br>VER AHORA?</h2>
+
+            <a href="index.html#intervencion" class="btn-nav-final btn-top">Intervención Social</a>
+            <a href="index.html#sobre-mi" class="btn-nav-final btn-right">Sobre mí</a>
+            <a href="index.html#violencia" class="btn-nav-final btn-bottom">Violencia de Género</a>
+            <a href="mailto:ana@anaruiz.com" class="btn-nav-final btn-left">Contacto</a>
         </div>
     </section>
 
